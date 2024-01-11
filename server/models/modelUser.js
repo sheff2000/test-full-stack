@@ -1,6 +1,5 @@
 import User from "./modelsData/userSchema.js";
 
-
 const createUser = async (userData) => {
     try {
         const user = new User(userData);
