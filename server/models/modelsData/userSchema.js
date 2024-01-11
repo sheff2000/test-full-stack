@@ -1,9 +1,14 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    nameUser: String,
-    roleUser: String,
-    passwordUser: String,
+    nameUser: {
+        type: String,
+        required: [true, 'User Name is required.']
+      },
+    passwordUser:  {
+        type: String,
+        required: [true, 'Password is required.']
+      },
     dateCreate: { type: Date, default: Date.now },
     dateUpdate: Date,
 });
