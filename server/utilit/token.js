@@ -10,7 +10,7 @@ const generate = (userData) => {
         );
         return token
     } catch(err) {
-        return next( new Error(`Error in generate token - ${err}`))
+        throw new Error(`Error in generate token - ${err}`)
     }
 };
 
