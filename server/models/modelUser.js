@@ -19,6 +19,18 @@ const findUserbyId = async (userId) => {
     }
 };
 
+const findUserbyUserName = async (userName) => {
+    try {
+        const user = await User.findOne({nameUser:userName}).exec();
+        if (!user) {
+            return false
+        } 
+        return user;
+    } catch (err) {
+        throw err;
+    }
+};
+
 const getAllUser = async () => {
     try {
         
@@ -64,11 +76,14 @@ const deleteUser = async (userId) => {
     }
 };
 
-export {
+const userModel = {
     createUser,
     updatePasswordUser,
     updateInfoUser,
     deleteUser,
     findUserbyId,
     getAllUser,
-}
+    findUserbyUserName,
+};
+
+export default userModel;
