@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../api/api-user';
+import { api_user } from '../api/api-user';
 import { validateLogin, validatePassword } from '../utilit/validation-userForm';
 
 
@@ -22,7 +22,7 @@ const AuthModal = ({ onClose }) => {
         }
 
         try {
-            const data = await api.login(loginData);
+            const data = await api_user.login(loginData);
             // где то тут сохраняем токен - вызовем функцию сервиса для работы с токеном
             onClose();
         } catch (error) {
@@ -32,7 +32,7 @@ const AuthModal = ({ onClose }) => {
     
     const handleSubmitRegister = async (event) => {
         event.preventDefault();
-        
+
         if (!validateLogin(registerData.login)) {
             alert('Логін має містити тільки латинсські літери, числа та знаки "-" і "_" ');
             return;
@@ -44,7 +44,7 @@ const AuthModal = ({ onClose }) => {
         }
 
         try {
-            const data = await api.register(registerData);
+            const data = await api_user.register(registerData);
             // типа зарегились удачно и в отввет получили токен - візов сервиса для работі с токеном
             onClose();
         } catch (error) {

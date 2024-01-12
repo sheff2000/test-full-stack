@@ -21,7 +21,7 @@ async function post(url, method, data) {
   }
 }
 
-export const api = {
+export const api_user = {
   login: (data) => post('/user/login', 'POST', data),
   register: (data) => post('/user/register', 'POST', data),
   // Другие API-запросы...
