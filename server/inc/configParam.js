@@ -11,3 +11,8 @@ export const configDB = {
 export const serverConfig = {
     port: process.env.PORT,
 };
+
+export const tokenConfig = {
+    secret_key: process.env.TOKEN_SECRET_KEY,
+    expires_key:'24h',
+};
