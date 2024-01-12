@@ -4,6 +4,7 @@ import { serverConfig } from './inc/configParam.js';
 import userRoutes from './routes/userRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
+import {errorOperation} from './utilit/errorOperation.js';
 
 
 const app = express();
@@ -15,6 +16,8 @@ app.use('/user', userRoutes);
 app.use('/project', projectRoutes);
 app.use('/task', taskRoutes);
 
+app.use(errorOperation);
+
 connectReadWrite().then(() => {
     console.log('Connected to MongoDB');
     app.listen(port, () => {
@@ -22,10 +25,4 @@ connectReadWrite().then(() => {
     });
 }).catch(err => {
     console.error('Database connection failed', err);
-});
-
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
 });
