@@ -1,43 +1,47 @@
 // логика работы с юзерами - создание/обновление
 import userModel from "../models/modelUser.js";
+import projectUsersModel from "../models/modelProjectUsers.js";
+import taskUsersModel from "../models/modelTaskUsers.js";
 import password from "../utilit/password.js";
 import tokenUtil from "../utilit/token.js";
 
 const loginUser = async (userData) => {
     try {
         // find by name
+        console.log('find user with naem - ', userData);
         const user = await userModel.findUserbyUserName(userData.userName);
         if (!user) {
             // не нашли юзера - отправляем 401 код
-            const error = new Error(`Користувача з імʼям ${userName} не знайдено`);
-            console.log('---------------------');
-            console.log(error);
-            console.log('----------------------');
-            error.debug = `Error in findUserbyUserName(userData.userName). userName - ${userData.userName}. Not finde USER`;
+            const error = new Error(`Користувача з імʼям ${userData.userName} не знайдено`);
+            error.debug = `Error in findUserbyUserName(userData.userName). userName - ${userData.userName}. Not find USER`;
             error.status = 401;
             throw(error);
         }
         // compare password
-        const isPasswordOk = await password.comparePassword(userData.userPassword, user.passwordUser);
+        console.log('compare password - ', userData, ' ||  user - ', user);
+        const isPasswordOk = await password.comparePassword(userData.userPassword, user.userPassword);
         if (!isPasswordOk) {
-            const error = new Error(`Invalid password`);
+            const error = new Error(`Невірній пароль!`);
             error.debug = `Error in userService / login User. Password not compare`;
             error.status = 401;
             throw(error);
         }
-        const token = tokenUtil.generate({userId: user._id, userName: user.nameUser});
-
-        // get count project and tasks for this user
-
+        const token = tokenUtil.generate({userId: user._id, userName: user.userName});
+        console.log('token - ', token);
         // data to return
         const userInfo = {
             userId: user._id, 
-            userName: user.nameUser,
+            userName: user.userName,
             countProjects: 0,
             countTasks: 0,
         }
+        // get count project and tasks for this user
+        userInfo.countProjects = projectUsersModel.countProjectsByUser(user._id);
+        userInfo.countTasks    = taskUsersModel.countTasksByUser(user._id);
+        
         return {userInfo, token}
     } catch(err) {
+        console.log('------- ERRORORROR CATCHHH  --- ');
         const error = new Error(err.message || `Internal server error`);
         error.debug = `Error catch in userService / login User. stack err - ${err}`;
         error.status = err.status || 500;
@@ -61,7 +65,7 @@ const createUser = async (userData) => {
         const error = new Error(err.message || `Internal server error`);
         error.debug = `Error catch in userService / Create User. msg err - ${err}`;
         error.status = err.status || 500;
-        throw (error);
+        throw(error);
     }
 };
 
@@ -71,9 +75,9 @@ const updatePasswordUser = async (passData) => {
         
     } catch(err) {
         const error = new Error(err.message || `Internal server error`);
-        error.debug = `Error catch in userService / updatePasswordUser. stack err - ${err}`;
+        error.debug = `Error catch in userService / updatePasswordUser. msg err - ${err}`;
         error.status = err.status || 500;
-        throw (error);
+        throw(error);
     }
 };
 
