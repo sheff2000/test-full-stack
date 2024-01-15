@@ -2,9 +2,10 @@ import User from "./modelsData/userSchema.js";
 
 const createUser = async (userData) => {
     try {
+        console.log('MODEL USER. createUser. userData - ', userData);
         const user = new User(userData);
-        await user.save();
-        return {userId:'userid'}
+        const result = await user.save();
+        return result
     } catch (err) {
         throw err;
     }
@@ -21,7 +22,7 @@ const findUserbyId = async (userId) => {
 
 const findUserbyUserName = async (userName) => {
     try {
-        const user = await User.findOne({nameUser:userName}).exec();
+        const user = await User.findOne({userName:userName}).exec();
         if (!user) {
             return false
         } 
@@ -42,7 +43,7 @@ const getAllUser = async () => {
 
 const updatePasswordUser = async (userId, hashPassword) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(userId, { passwordUser: hashPassword }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userId, { userPassword: hashPassword }, { new: true });
 
         if (!updatedUser) {
             throw new Error('User not found');
@@ -50,7 +51,7 @@ const updatePasswordUser = async (userId, hashPassword) => {
 
         const result = {
             userId: updatedUser._id,
-            nameUser: updatedUser.nameUser,
+            userName: updatedUser.userName,
         };
 
         return result;
