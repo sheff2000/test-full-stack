@@ -7,16 +7,14 @@ const login = async (req, res, next) => {
         // определить все входные аргументы
         const userData = { userName: req.body.login, userPassword: req.body.password };
         // валидация - наличие всех нужных данных, проверка данных на корректность
-        if (!validator.validUserName(userData.userName) && !validator.validUserPassword(userData.userPassword)) {
+        if (!validator.validUserName(userData.userName) || !validator.validUserPassword(userData.userPassword)) {
             const error = new Error(`Не корректний формат логіну та/або паролю`);
             error.status = 401;
             return next(error);
         }
-        // проверка прав доступа на текущий роутер - тут не надо
 
-        // передаем все на сервис 
-        // обробатываем ошибки / делаем передачу данных
         const result = await loginUser(userData);
+        // возвращаем все что насобирали в сервисе
         return res.json(result);
     } catch(err) {
         console.error(err);
@@ -33,10 +31,10 @@ const register = async (req, res, next) => {
         const userData = { userName: req.body.login, userPassword: req.body.password };
         //console.log('FRON SEND USER DATA - ', userData);
         // валидация - наличие всех нужных данных, проверка данных на корректность
-        if (!validator.validUserName(userData.userName) && !validator.validUserPassword(userData.userPassword)) {
+        if (!validator.validUserName(userData.userName) || !validator.validUserPassword(userData.userPassword)) {
             const error = new Error(`Не корректний формат логіну та/або паролю`);
             error.debug = `Error validation validUserName and validUserPassword userData - ${userData}`;
-            error.status = 401;
+            error.status = 400;
             return next(error);
         }
         // проверка прав доступа на текущий роутер - тут не надо
@@ -44,7 +42,7 @@ const register = async (req, res, next) => {
         // передаем все на сервис 
         const result = await createUser(userData);
 
-        return res.json(result);
+        return res.status(201).json(result);
     } catch(err) {
         console.error(err);
         const error = new Error(err.message || "Internal server error");
