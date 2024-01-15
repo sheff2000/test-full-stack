@@ -7,6 +7,4 @@ router.post('/login', userController.login);
 router.post('/register', userController.register);
 //router.put('/updatepassword/:userId', verifyToken, updateUserPassword);
 
-
-
 export default router;
