@@ -1,7 +1,8 @@
-const BASE_SERVER_URL = 'http://localhost';
+const BASE_SERVER_URL = 'http://localhost:3002';
 
 async function post(url, method, data) {
   try {
+    console.log('API - url ', url, ' | method - ', method, ' | data - ', data);
     const response = await fetch(`${BASE_SERVER_URL}${url}`, {
       method: method,
       headers: {
