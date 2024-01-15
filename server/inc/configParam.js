@@ -16,3 +16,12 @@ export const tokenConfig = {
     secret_key: process.env.TOKEN_SECRET_KEY,
     expires_key:'24h',
 };
+
+export const validDataConfig = {
+    userName: {
+        characterSet: /^[A-Za-z0-9_-]+$/,
+    },
+    userPassword: {
+        minLen: 6,
+    }
+};
