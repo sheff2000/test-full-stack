@@ -1,5 +1,7 @@
 <script setup>
 import useUserStore from '@/stores/userStore';
+import LoginForm from './LoginForm.vue';
+import RegisterForm from './RegisterForm.vue';
 
 const userStore = useUserStore();
 
@@ -24,46 +26,14 @@ const userStore = useUserStore();
               <a class="nav-link" href="#register" data-bs-toggle="tab">Зареєеструватись</a>
             </li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content alert alert-light">
             <div class="tab-pane fade show active" id="login">
               <!-- Форма авторизации -->
-              <form class="mt-3">
-                <div class="mb-3">
-                  <label for="login-username" class="form-label">Логин</label>
-                  <input type="text"
-                    class="form-control"
-                    id="login-username"
-                    placeholder="Введите ваш логин">
-                </div>
-                <div class="mb-3">
-                  <label for="login-password" class="form-label">Пароль</label>
-                  <input type="password"
-                    class="form-control"
-                    id="login-password"
-                    placeholder="Введите ваш пароль">
-                </div>
-                <button type="button" class="btn btn-primary">Авторизация</button>
-              </form>
+              <LoginForm />
             </div>
             <div class="tab-pane fade" id="register">
             <!-- Форма регистрации -->
-              <form class="mt-3">
-                <div class="mb-3">
-                  <label for="register-username" class="form-label">Логин</label>
-                  <input type="text"
-                    class="form-control"
-                    id="register-username"
-                    placeholder="Выберите логин">
-                </div>
-                <div class="mb-3">
-                  <label for="register-password" class="form-label">Пароль</label>
-                  <input type="password"
-                    class="form-control"
-                    id="register-password"
-                    placeholder="Выберите пароль">
-                </div>
-                <button type="button" class="btn btn-success">Регистрация</button>
-              </form>
+              <RegisterForm />
             </div>
           </div>
         </div>
@@ -78,6 +48,15 @@ const userStore = useUserStore();
 </template>
 
 <style scoped>
+.modal-content {
+  text-align: left;
+  padding: 15px;
+  background-color: #e9ecef;
+}
+.tab-content {
+  padding: 40px;
+  margin-top: 25px;
+}
 @media (max-width: 576px) {
   .modal-dialog {
     max-width: 100%;
