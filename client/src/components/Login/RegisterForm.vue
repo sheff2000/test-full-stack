@@ -11,10 +11,10 @@ const validLoginRegister = ref('');
 const validPasswordRegister = ref('');
 
 const validLogin = () => {
-    validLoginRegister.value = userStore.loginRgp.test(loginRegister.value);
+    validLoginRegister.value = userStore.validLogin(loginRegister.value);
 };
 const validPassword = () => {
-    validPasswordRegister.value = passwordRegister.value.length > 5;
+    validPasswordRegister.value = userStore.validPassword(passwordRegister.value);
 };
 
 const passwordInputClasses = computed(() => {
@@ -54,7 +54,8 @@ const sendRegisterForm = async () => {
                 id="register-username"
                 placeholder="Введіть логін"
                 v-model="loginRegister"
-                @input="validLogin">
+                @input="validLogin"
+                required>
             <div id="register-username-help" class="form-text">
                 Логін має містити латинські літери та/або "_" "-"
             </div>
@@ -67,7 +68,8 @@ const sendRegisterForm = async () => {
                   id="register-password"
                   placeholder="Введіть пароль"
                   v-model="passwordRegister"
-                  @input="validPassword">
+                  @input="validPassword"
+                  required>
             <div id="register-username-help" class="form-text">
                 Пароль - не менше 6 символів
             </div>
