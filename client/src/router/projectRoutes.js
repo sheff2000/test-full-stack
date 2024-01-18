@@ -1,13 +1,13 @@
 const projectRoutes = [
-  {
-    path: '/projects',
-    name: 'projects',
-    component: () => import('../views/AboutView.vue'),
-    meta: {
-      requiresAuth: true, // предполагается наличие авторизации
-      title: 'Список Проектов',
+    {
+        path: '/projects',
+        name: 'projects',
+        component: () => import('../views/AboutView.vue'),
+        meta: {
+            requiresAuth: true, // предполагается наличие авторизации
+            title: 'Список Проектов',
+        },
     },
-  },
 ];
 /*
   {
