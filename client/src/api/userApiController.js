@@ -25,7 +25,10 @@ const login = async (data) => {
 const register = async (data) => {
     const method = 'POST';
     const path = '/user/register';
-    const sendData = { ...data };
+    const sendData = {
+        login: data.loginRegister,
+        password: data.passwordRegister,
+    };
     const headers = {
         'Content-Type': 'application/json',
     };
@@ -35,7 +38,7 @@ const register = async (data) => {
         return resultSend;
     } catch (err) {
         console.log('Error in register User - ', err);
-        return false;
+        return { err: true, message: `Якась помилка в контроллері - ${err}` };
     }
 };
 

@@ -14,13 +14,13 @@ async function errorApi(errorData) {
         if (errorData.errStatus === 'server') {
             switch (errorData.status) {
             case 404:
-                message = `Ресур не знайдено. ${errorData.res}`;
+                message = `Ресур не знайдено. ${errorData.res.message}`;
                 break;
             case 500:
                 message = 'Сервер зломався :( ';
                 break;
             default:
-                message = `Щось на сервері не змогло виконатися :( Що саме - ${errorData.res}`;
+                message = `${errorData.res.message}`;
             }
         }
     }
