@@ -1,8 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import useUserStore from '@/stores/userStore';
+import useAlertModalStore from '@/stores/alertModalStore';
 
 const userStore = useUserStore();
+const alertModalStore = useAlertModalStore();
+
 const loginRegister = ref('');
 const passwordRegister = ref('');
 
@@ -34,10 +37,22 @@ const loginInputClasses = computed(() => {
         'is-invalid': !validLoginRegister.value,
     };
 });
+
+const openAlertModal = () => {
+    alertModalStore.openModal('Ваше сообщение здесь');
+};
+
+const sendRegisterForm = async () => {
+    await userStore.register({
+        loginRegister: loginRegister.value,
+        passwordRegister: passwordRegister.value,
+    });
+    openAlertModal();
+};
 </script>
 
 <template>
-    <form @submit.prevent="">
+    <form @submit.prevent="sendRegisterForm">
         <div class="mb-3">
             <label for="register-username" class="form-label">Логін</label>
             <input type="text"
