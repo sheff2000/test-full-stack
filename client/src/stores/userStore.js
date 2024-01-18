@@ -12,7 +12,7 @@ const useUserStore = defineStore('user', {
             this.showModal = !this.showModal;
             console.log('toggle model - ', this.showModal);
         },
-        register(registerData) {
+        async register(registerData) {
             /*
             * Регистрация юзера - отправка данных на сервер
             * @param {object} registerData
@@ -23,6 +23,9 @@ const useUserStore = defineStore('user', {
             * 2 - send to api controller
             * 3 - reciev result from answer
             */
+            const resultRegister = await userApiController.register(registerData);
+            console.log('Result register - ', resultRegister);
+            return true;
         },
         login() {
 
