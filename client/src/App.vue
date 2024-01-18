@@ -1,5 +1,10 @@
+<script setup>
+import AlertAllInfoModal from '@/components/ModalWindow/AlertAllInfoModal.vue';
+</script>
+
 <template>
-  <router-view/>
+    <router-view/>
+    <AlertAllInfoModal ref="alertModal"/>
 </template>
 
 <style>
