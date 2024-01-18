@@ -1,33 +1,28 @@
 <script setup>
 import useAlertModalStore from '@/stores/alertModalStore';
 
-const { showModal, message, closeModal } = useAlertModalStore();
+const alertModalStore = useAlertModalStore();
 </script>
 
 <template>
-    <div
-        class="modal fade"
+    <div v-if="alertModalStore.showModal"
+    class="modal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="alertModalLabel"
         aria-hidden="true"
-        :class="{ 'show-modal': showModal }">
+        style="display: block; background-color: rgba(0, 0, 0, 0.5);">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="alertModalLabel">Уведомление</h5>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        aria-label="Close"
-                        @click="closeModal">
-                    </button>
-                </div>
                 <div class="modal-body">
-                    {{ message }}
+                    {{ alertModalStore.message }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="closeModal">ОК</button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="alertModalStore.closeModal">
+                            ОК
+                    </button>
                 </div>
             </div>
         </div>

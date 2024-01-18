@@ -4,7 +4,7 @@ import AlertAllInfoModal from '@/components/ModalWindow/AlertAllInfoModal.vue';
 
 <template>
     <router-view/>
-    <AlertAllInfoModal ref="alertModal"/>
+    <AlertAllInfoModal />
 </template>
 
 <style>
