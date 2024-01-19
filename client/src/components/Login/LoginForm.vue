@@ -30,8 +30,9 @@ const sendLoginForm = async () => {
         loginAuth: loginAuth.value,
         passwordAuth: passwordAuth.value,
     });
-    console.log('vue login - ', result);
-    alertModalStore.openModal(result.message, result.status);
+    if (result.err) {
+        alertModalStore.openModal(result.message, result.status);
+    }
 };
 </script>
 

@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia';
 import userApiController from '@/api/userApiController';
+import useTokenStore from './tokenStore';
 
 const useUserStore = defineStore('user', {
     state: () => ({
         showModal: false,
         loginRgp: /^[A-Za-z0-9_-]+$/,
+        isUserAuth: false,
+        userInfo: {
+            userName: null,
+            userId: null,
+        },
+        userCountProjects: 0,
+        userCountTasks: 0,
     }),
 
     actions: {
@@ -34,8 +42,13 @@ const useUserStore = defineStore('user', {
             if (resultRegister.err) {
                 return resultRegister;
             }
-            // тут надо принять токен
-            return resultRegister;
+            // и отправляем сразу на авторизацию
+            const resultLogin = await this.login({
+                loginAuth: registerData.loginRegister,
+                passwordAuth: registerData.passwordRegister,
+            });
+
+            return resultLogin;
         },
         async login(loginData) {
             /*
@@ -59,10 +72,23 @@ const useUserStore = defineStore('user', {
             if (resultLogin.err) {
                 return resultLogin;
             }
+
+            const tokenStore = useTokenStore();
+            tokenStore.setToken(resultLogin.res.token);
+
+            this.setUserData({
+                userId: resultLogin.res.userId,
+                userName: resultLogin.res.userName,
+            });
+
+            this.showModal = false;
             return true;
         },
         logout() {
-
+            this.isUserAuth = false;
+            this.user = null;
+            const tokenStore = useTokenStore();
+            tokenStore.clearToken();
         },
         validLogin(login) {
             if (this.loginRgp.test(login) && login.length > 0) {
@@ -75,6 +101,20 @@ const useUserStore = defineStore('user', {
                 return true;
             }
             return false;
+        },
+        setUserData(userData) { // устанавливаем начальные данные пользователя
+            localStorage.setItem('userInfo', JSON.stringify(userData));
+            this.userInfo = { ...userData };
+            this.isUserAuth = true;
+            return true;
+        },
+        setUserDataFromLocalStorage() {
+            if (!localStorage.getItem('userInfo')) {
+                return false;
+            }
+            this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            this.isUserAuth = true;
+            return true;
         },
     },
 });
