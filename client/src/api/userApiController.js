@@ -8,7 +8,10 @@ import apiProjectServer from './apiProjectServer';
 const login = async (data) => {
     const method = 'POST';
     const path = '/user/login';
-    const sendData = { ...data };
+    const sendData = {
+        login: data.loginAuth,
+        password: data.passwordAuth,
+    };
     const headers = {
         'Content-Type': 'application/json',
     };
@@ -18,7 +21,7 @@ const login = async (data) => {
         return resultSend;
     } catch (err) {
         console.log('Error in login User - ', err);
-        return false;
+        return { err: true, message: `Якась помилка в контроллері LOGIN - ${err}` };
     }
 };
 
@@ -35,6 +38,7 @@ const register = async (data) => {
 
     try {
         const resultSend = await apiProjectServer.sendReq(path, method, headers, sendData);
+        console.log('RESULT IN LOGIN - ', resultSend);
         return resultSend;
     } catch (err) {
         console.log('Error in register User - ', err);

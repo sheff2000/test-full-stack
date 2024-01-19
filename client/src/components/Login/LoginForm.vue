@@ -10,24 +10,11 @@ const loginAuth = ref('');
 const passwordAuth = ref('');
 
 const isValidLoginAuth = ref('');
-const isValidPasswordAuth = ref('');
 
 const validLogin = () => {
     isValidLoginAuth.value = userStore.validLogin(loginAuth.value);
 };
-const validPassword = () => {
-    isValidPasswordAuth.value = userStore.validPassword(passwordAuth.value);
-};
 
-const passwordInputClasses = computed(() => {
-    if (isValidPasswordAuth.value === '') {
-        return {};
-    }
-    return {
-        'is-valid': isValidPasswordAuth.value,
-        'is-invalid': !isValidPasswordAuth.value,
-    };
-});
 const loginInputClasses = computed(() => {
     if (isValidLoginAuth.value === '') {
         return {};
@@ -39,7 +26,11 @@ const loginInputClasses = computed(() => {
 });
 
 const sendLoginForm = async () => {
-    const result = await userStore.login();
+    const result = await userStore.login({
+        loginAuth: loginAuth.value,
+        passwordAuth: passwordAuth.value,
+    });
+    console.log('vue login - ', result);
     alertModalStore.openModal(result.message, result.status);
 };
 </script>
@@ -63,11 +54,9 @@ const sendLoginForm = async () => {
             <input
                 type="password"
                 class="form-control"
-                :class="passwordInputClasses"
                 id="login-password"
                 placeholder="Введіть ваш пароль"
                 v-model="passwordAuth"
-                @input="validPassword"
                 required>
         </div>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Авторизація</button>

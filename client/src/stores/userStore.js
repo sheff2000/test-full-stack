@@ -55,9 +55,9 @@ const useUserStore = defineStore('user', {
                 return { err: true, message: 'Пароль некорректний чи відсутній', status: '422' };
             }
             const resultLogin = await userApiController.login(loginData);
+            console.log('ERROR LOGIN - ', resultLogin);
             if (resultLogin.err) {
-                console.log('ERROR LOGIN - ', resultLogin.res.debug);
-                return false;
+                return resultLogin;
             }
             return true;
         },
@@ -71,11 +71,9 @@ const useUserStore = defineStore('user', {
             return false;
         },
         validPassword(password) {
-            if (password.length > 6) {
-                console.log('Valid password. Password - ', password, ' - its > 6 ');
+            if (password.length > 5) {
                 return true;
             }
-            console.log('Password (', password, ') - its NO > 6 ');
             return false;
         },
     },
