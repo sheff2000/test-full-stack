@@ -21,6 +21,8 @@ const useAlertModalStore = defineStore('alertModal', {
             this.showModal = true;
         },
         closeModal() {
+            this.message = '';
+            this.classViewStatusCode = 'text-bg-info';
             this.showModal = false;
         },
     },

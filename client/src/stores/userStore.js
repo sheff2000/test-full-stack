@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import userApiController from '@/api/userApiController';
-import useAlertModalStore from './alertModalStore';
 
 const useUserStore = defineStore('user', {
     state: () => ({
@@ -23,24 +22,20 @@ const useUserStore = defineStore('user', {
             * 2 - send to api controller
             * 3 - reciev result from answer
             */
-            const alertModalStore = useAlertModalStore();
 
             if (!this.validLogin(registerData.loginRegister)) {
-                alertModalStore.openModal('Логін некорректний чи відсутній');
-                return false;
+                return { err: true, message: 'Логін некорректний чи відсутній', status: '422' };
             }
             if (!this.validPassword(registerData.passwordRegister)) {
-                alertModalStore.openModal('Пароль некорректний чи відсутній');
-                return false;
+                return { err: true, message: 'Пароль некорректний чи відсутній', status: '422' };
             }
             const resultRegister = await userApiController.register(registerData);
             console.log('Result register - ', resultRegister);
             if (resultRegister.err) {
-                alertModalStore.openModal(resultRegister.message, resultRegister.status);
-                return false;
+                return resultRegister;
             }
             // тут надо принять токен
-            return true;
+            return resultRegister;
         },
         login() {
 

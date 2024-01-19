@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import useUserStore from '@/stores/userStore';
+import useAlertModalStore from '@/stores/alertModalStore';
 
 const userStore = useUserStore();
+const alertModalStore = useAlertModalStore();
 
 const loginRegister = ref('');
 const passwordRegister = ref('');
@@ -37,10 +39,17 @@ const loginInputClasses = computed(() => {
 });
 
 const sendRegisterForm = async () => {
-    await userStore.register({
+    const result = await userStore.register({
         loginRegister: loginRegister.value,
         passwordRegister: passwordRegister.value,
     });
+
+    alertModalStore.openModal(result.message || 'Користувач успішно зареєестрован.', result.status || '200');
+    if (!result.err) {
+        // удачно все
+        loginRegister.value = '';
+        passwordRegister.value = '';
+    }
 };
 </script>
 
