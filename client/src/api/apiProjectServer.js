@@ -1,31 +1,7 @@
-const BASE_SERVER_URL = 'http://localhost:3002';
+import config from '@/config/config';
+import errorApi from './errorApi';
 
-async function errorApi(errorData) {
-    /* ОБРАБОТЧИК ОШИБОК ПРИ ЗАПРОСЕ НА СЕРВЕР
-    * если ошибка от сервера, то там есть код ошибки и текст - code / message
-    * если ошибка произошла тут - то это скорее всего проблемы со связи с сервером
-    *
-    */
-    let message = 'Виникла невідома помилка';
-    if (errorData.err) {
-        if (errorData.errStatus === 'api') {
-            message = 'Не змогли підʼєднатись до сервера. Оновіть сторінку та спробуйте ще.';
-        }
-        if (errorData.errStatus === 'server') {
-            switch (errorData.status) {
-            case 404:
-                message = `Ресур не знайдено. ${errorData.res.message}`;
-                break;
-            case 500:
-                message = 'Сервер зломався :( ';
-                break;
-            default:
-                message = `${errorData.res.message}`;
-            }
-        }
-    }
-    return { err: true, message };
-}
+const BASE_SERVER_URL = config.serverApiBaseURL;
 
 // тайм-аут для слишком доолгих запросов
 function timeoutPromise(ms, error) {
