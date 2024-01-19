@@ -37,8 +37,29 @@ const useUserStore = defineStore('user', {
             // тут надо принять токен
             return resultRegister;
         },
-        login() {
-
+        async login(loginData) {
+            /*
+            * Авторизация
+            * @param loginData {object} = loginAuth, passwordAuth
+            * 1 - валидация
+            * 2 - отпарвка на сервер
+            * 3 - проверка ошибки от сервера - вывод модалки с ошибкой
+            * 4 - ошибки нет - сохранить данные в локалСтор + сюда
+            * - передать токен в токенСтор
+            * - закрыть окно авторизации
+            */
+            if (!this.validLogin(loginData.loginAuth)) {
+                return { err: true, message: 'Логін некорректний чи відсутній', status: '422' };
+            }
+            if (!this.validPassword(loginData.passwordAuth)) {
+                return { err: true, message: 'Пароль некорректний чи відсутній', status: '422' };
+            }
+            const resultLogin = await userApiController.login(loginData);
+            if (resultLogin.err) {
+                console.log('ERROR LOGIN - ', resultLogin.res.debug);
+                return false;
+            }
+            return true;
         },
         logout() {
 
