@@ -39,7 +39,14 @@ async function sendReq(url, method, headers, data) {
         });
         return res;
     } catch (error) {
-        const res = await errorApi({ err: true, errStatus: 'api', res: error.message });
+        const res = await errorApi({
+            err: true,
+            errStatus: 'api',
+            status: '500',
+            res: {
+                message: error.message,
+            },
+        });
         return res;
     }
 }

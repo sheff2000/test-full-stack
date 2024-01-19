@@ -10,16 +10,14 @@ const alertModalStore = useAlertModalStore();
         tabindex="-1"
         role="dialog"
         aria-hidden="true"
-        style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+        style="display: block; background-color: rgba(0, 0, 0, 0.7);">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" :class="alertModalStore.classViewStatusCode">
                 <div class="modal-body">
-                    {{ alertModalStore.message }}
-                </div>
-                <div class="modal-footer">
+                    {{ alertModalStore.message }} <br /><br />
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-outline-light"
                         @click="alertModalStore.closeModal">
                             ОК
                     </button>

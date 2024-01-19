@@ -36,7 +36,7 @@ const useUserStore = defineStore('user', {
             const resultRegister = await userApiController.register(registerData);
             console.log('Result register - ', resultRegister);
             if (resultRegister.err) {
-                alertModalStore.openModal(resultRegister.message);
+                alertModalStore.openModal(resultRegister.message, resultRegister.status);
                 return false;
             }
             // тут надо принять токен
