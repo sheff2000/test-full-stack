@@ -1,5 +1,13 @@
 <script setup>
+import { onMounted } from 'vue';
 import AlertAllInfoModal from '@/components/ModalWindow/AlertAllInfoModal.vue';
+import useUserStore from './stores/userStore';
+
+const userStore = useUserStore();
+
+onMounted(() => {
+    userStore.initializeUser();
+});
 </script>
 
 <template>

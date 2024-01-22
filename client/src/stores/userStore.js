@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import config from '@/config/config';
 import userApiController from '@/api/userApiController';
 import useTokenStore from './tokenStore';
 
@@ -77,8 +78,8 @@ const useUserStore = defineStore('user', {
             tokenStore.setToken(resultLogin.res.token);
 
             this.setUserData({
-                userId: resultLogin.res.userId,
-                userName: resultLogin.res.userName,
+                userId: resultLogin.res.userInfo.userId,
+                userName: resultLogin.res.userInfo.userName,
             });
 
             this.showModal = false;
@@ -87,6 +88,7 @@ const useUserStore = defineStore('user', {
         logout() {
             this.isUserAuth = false;
             this.user = null;
+            localStorage.removeItem(config.userInfoLocalStorage);
             const tokenStore = useTokenStore();
             tokenStore.clearToken();
         },
@@ -103,18 +105,29 @@ const useUserStore = defineStore('user', {
             return false;
         },
         setUserData(userData) { // устанавливаем начальные данные пользователя
-            localStorage.setItem('userInfo', JSON.stringify(userData));
+            localStorage.setItem(config.userInfoLocalStorage, JSON.stringify(userData));
             this.userInfo = { ...userData };
             this.isUserAuth = true;
             return true;
         },
         setUserDataFromLocalStorage() {
-            if (!localStorage.getItem('userInfo')) {
+            if (!localStorage.getItem(config.userInfoLocalStorage)) {
                 return false;
             }
-            this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            this.userInfo = JSON.parse(localStorage.getItem(config.userInfoLocalStorage));
             this.isUserAuth = true;
             return true;
+        },
+        async initializeUser() {
+            try {
+                const tokenStore = useTokenStore();
+                await tokenStore.verifyToken();
+                if (!this.setUserDataFromLocalStorage()) {
+                    this.logout();
+                }
+            } catch (error) {
+                this.clearToken();
+            }
         },
     },
 });

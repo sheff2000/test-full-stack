@@ -1,6 +1,8 @@
 <script setup>
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import AuthModal from '@/components/Login/AuthModal.vue';
+import CountProject from '@/components/NavBar/CountProject.vue';
+import ButtonLoginExit from '@/components/NavBar/ButtonLoginExit.vue';
 import useUserStore from '@/stores/userStore';
 
 const userStore = useUserStore();
@@ -12,26 +14,17 @@ const userStore = useUserStore();
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Project Manager</a>
             <div class="navbar-nav mr-auto">
-                  <!-- Для больших экранов -->
-                  <a class="nav-link d-none d-lg-inline" href="#">My Projects: 0</a>
-                  <a class="nav-link d-none d-lg-inline" href="#">My Tasks: 0</a>
-
-                  <!-- Для мобильных устройств -->
-                  <a class="nav-link d-lg-none" href="#">
-                      <svg class="bi bi-check" width="16" height="16" fill="white">
-                      <use xlink:href="#check"/>
-                      </svg> 0
-                  </a>
-                  <a class="nav-link d-lg-none" href="#">
-                      <svg class="bi bi-check" width="16" height="16" fill="smoke">
-                      <use xlink:href="#check"/>
-                      </svg> 0
-                  </a>
+                <CountProject
+                    :count-project="userStore.userCountProjects"
+                    :count-task="userStore.userCountTasks"/>
             </div>
-            <button class="btn btn-outline-success my-2 my-sm-0"
-                @click="userStore.toggleModal">
-                    Login
-            </button>
+            <div class="navbar-nav mr-auto">
+                <ButtonLoginExit
+                    :is-user-auth="userStore.isUserAuth"
+                    :user-info="userStore.userInfo"
+                    @login="userStore.toggleModal"
+                    @logout="userStore.logout"/>
+            </div>
         </div>
     </nav>
     <AuthModal />
