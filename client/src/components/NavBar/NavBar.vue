@@ -1,5 +1,6 @@
 <script setup>
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import config from '@/config/config';
 import AuthModal from '@/components/Login/AuthModal.vue';
 import CountProject from '@/components/NavBar/CountProject.vue';
 import ButtonLoginExit from '@/components/NavBar/ButtonLoginExit.vue';
@@ -12,11 +13,12 @@ const userStore = useUserStore();
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Project Manager</a>
+            <a class="navbar-brand" href="#">{{ config.nameProject }}</a>
             <div class="navbar-nav mr-auto">
                 <CountProject
                     :count-project="userStore.userCountProjects"
-                    :count-task="userStore.userCountTasks"/>
+                    :count-task="userStore.userCountTasks"
+                    :is-user-auth="userStore.isUserAuth"/>
             </div>
             <div class="navbar-nav mr-auto">
                 <ButtonLoginExit

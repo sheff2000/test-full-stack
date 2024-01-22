@@ -21,7 +21,7 @@ const emit = defineEmits(['login', 'logout']);
 
 <template>
     <span v-if="props.isUserAuth">
-        <span>
+        <span class="navbar-text">
             {{ props.userInfo.userName }}
         </span>
         <button
@@ -36,3 +36,8 @@ const emit = defineEmits(['login', 'logout']);
         Login
     </button>
 </template>
+<style scoped>
+    .navbar-text {
+        margin-right: 15px;
+    }
+</style>
