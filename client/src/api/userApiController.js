@@ -46,9 +46,27 @@ const register = async (data) => {
     }
 };
 
+const getUserInfoByToken = async (token) => {
+    const method = 'GET';
+    const path = '/user/info';
+    const sendData = {};
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Добавление токена в заголовки
+    };
+
+    try {
+        const resultSend = await apiProjectServer.sendReq(path, method, headers, sendData);
+        return resultSend;
+    } catch (err) {
+        console.log('Error in get User Info by token - ', err);
+        return { err: true, message: `Якась помилка в контроллері getuserinfo - ${err}` };
+    }
+};
 const userApiController = {
     login,
     register,
+    getUserInfoByToken,
 };
 
 export default userApiController;

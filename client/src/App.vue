@@ -1,12 +1,17 @@
 <script setup>
 import { onMounted } from 'vue';
 import AlertAllInfoModal from '@/components/ModalWindow/AlertAllInfoModal.vue';
+import useAlertModalStore from './stores/alertModalStore';
 import useAuthStore from './stores/authStore';
 
-const authStore = useAuthStore();
-
 onMounted(async () => {
-    await authStore.initializeUser();
+    const authStore = useAuthStore();
+    const alertModalStore = useAlertModalStore();
+
+    const resAuth = await authStore.initializeUser();
+    if (resAuth.err) {
+        alertModalStore.openModal(resAuth.message, resAuth.status);
+    }
 });
 </script>
 

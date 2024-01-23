@@ -129,8 +129,12 @@ const useAuthStore = defineStore('auth', {
                 }
 
                 // запрашиваем обновленные данные юзера с сервера
-                const tempUserInfo = JSON.parse(localStorage.getItem(config.userInfoLocalStorage));
-                userStore.setUserData(tempUserInfo);
+                const tempUserInfo = await userApiController.getUserInfoByToken(localToken);
+                if (tempUserInfo.err) {
+                    console.log('ERROR take info about user');
+                    return tempUserInfo;
+                }
+                userStore.setUserData(tempUserInfo.res);
                 // устанавливаем данные в сторы
                 tokenStore.setToken(localToken);
                 return true;
