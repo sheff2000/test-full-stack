@@ -1,10 +1,13 @@
 <script setup>
-import { ref, computed } from 'vue';
-import useUserStore from '@/stores/userStore';
+import { ref, computed, defineEmits } from 'vue';
+import useAuthStore from '@/stores/authStore';
 import useAlertModalStore from '@/stores/alertModalStore';
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
 const alertModalStore = useAlertModalStore();
+
+// в родительский возвращаем результат нажатия на кнопку регистрации тру/фалс
+const emit = defineEmits(['registerEnd']);
 
 const loginRegister = ref('');
 const passwordRegister = ref('');
@@ -13,10 +16,10 @@ const validLoginRegister = ref('');
 const validPasswordRegister = ref('');
 
 const validLogin = () => {
-    validLoginRegister.value = userStore.validLogin(loginRegister.value);
+    validLoginRegister.value = authStore.validLogin(loginRegister.value);
 };
 const validPassword = () => {
-    validPasswordRegister.value = userStore.validPassword(passwordRegister.value);
+    validPasswordRegister.value = authStore.validPassword(passwordRegister.value);
 };
 
 const passwordInputClasses = computed(() => {
@@ -39,7 +42,7 @@ const loginInputClasses = computed(() => {
 });
 
 const sendRegisterForm = async () => {
-    const result = await userStore.register({
+    const result = await authStore.register({
         loginRegister: loginRegister.value,
         passwordRegister: passwordRegister.value,
     });
@@ -49,6 +52,7 @@ const sendRegisterForm = async () => {
         // удачно все
         loginRegister.value = '';
         passwordRegister.value = '';
+        emit('registerEnd', true);
     }
 };
 </script>

@@ -7,6 +7,9 @@ const useAlertModalStore = defineStore('alertModal', {
         message: '',
     }),
     actions: {
+        toggleModal() {
+            this.showModal = !this.showModal;
+        },
         openModal(msg, statusCode) {
             if (statusCode >= 200 && statusCode < 300) {
                 this.classViewStatusCode = 'text-bg-success';

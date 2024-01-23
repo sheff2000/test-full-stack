@@ -1,7 +1,8 @@
-// стор для работы-обработки и контроля токена авторизации
+/*
+* Стор для токена авторизации
+* хранит токен / проверяет его актуальность
+*/
 import { defineStore } from 'pinia';
-import config from '@/config/config';
-import router from '@/router';
 
 const useTokenStore = defineStore('token', {
     state: () => ({
@@ -16,34 +17,26 @@ const useTokenStore = defineStore('token', {
         async setToken(newToken) {
             this.token = newToken;
             this.tokenExpEnd = false;
-            localStorage.setItem(config.tokenLocalStorage, newToken);
         },
         clearToken() {
             this.token = null;
             this.tokenExpEnd = true;
-            localStorage.removeItem(config.tokenLocalStorage);
-            router.push('/');
-            // router.push('/login');
+            return true;
         },
-        async verifyToken() {
-            if (!localStorage.getItem(config.tokenLocalStorage)) {
-                // если токен НЕ существует
-                this.clearToken();
-            }
+        async verifyToken(token) {
             // проверка срока действия токена
-            const token = localStorage.getItem(config.tokenLocalStorage);
             if (token) {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const currentTime = Date.now() / 1000;
 
                 if (payload.exp < currentTime) {
                     console.log('Токен истек');
-                    this.clearToken();
-                } else {
-                    console.log('Токен действителен');
-                    this.setToken(token);
+                    return false;
                 }
+                console.log('Токен действителен');
+                return true;
             }
+            return false;
         },
     },
 });

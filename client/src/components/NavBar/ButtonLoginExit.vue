@@ -1,5 +1,10 @@
 <script setup>
+// нкопка должна быть самодостаточна! Возвращает тип клика - login/logout
+// но данные о пользователе и авторизации берет сама из стора!
 import { defineProps, defineEmits } from 'vue';
+import router from '@/router';
+import useAuthStore from '@/stores/authStore';
+import useUserStore from '@/stores/userStore';
 
 const props = defineProps({
     isUserAuth: {
@@ -7,32 +12,33 @@ const props = defineProps({
         required: false,
         default: false,
     },
-    userInfo: {
-        type: Object,
-        required: false,
-        default: () => ({
-            userName: null,
-        }),
-    },
 });
 
-const emit = defineEmits(['login', 'logout']);
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const emit = defineEmits(['toggle']);
+
+const logout = () => {
+    emit('toggle');
+    authStore.logout();
+    router.push('/');
+};
 </script>
 
 <template>
     <span v-if="props.isUserAuth">
         <span class="navbar-text">
-            {{ props.userInfo.userName }}
+            {{ userStore.userInfo.userName }}
         </span>
         <button
             class="btn btn-outline-light my-2 my-sm-0"
-            @click="() => emit('logout')">
+            @click="logout">
                 Exit
         </button>
     </span>
     <button v-else
         class="btn btn-outline-success my-2 my-sm-0"
-        @click="() => emit('login')">
+        @click="() => emit('toggle')">
         Login
     </button>
 </template>

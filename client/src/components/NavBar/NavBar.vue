@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import config from '@/config/config';
 import AuthModal from '@/components/Login/AuthModal.vue';
@@ -7,13 +8,17 @@ import ButtonLoginExit from '@/components/NavBar/ButtonLoginExit.vue';
 import useUserStore from '@/stores/userStore';
 
 const userStore = useUserStore();
+const showModalAuth = ref(false); // окно авторизации или регистрации
 
+const viewLoginForm = () => {
+    showModalAuth.value = !showModalAuth.value;
+};
 </script>
 
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">{{ config.nameProject }}</a>
+            <router-link to="/" class="navbar-brand">{{ config.nameProject }}</router-link>
             <div class="navbar-nav mr-auto">
                 <CountProject
                     :count-project="userStore.userCountProjects"
@@ -23,13 +28,11 @@ const userStore = useUserStore();
             <div class="navbar-nav mr-auto">
                 <ButtonLoginExit
                     :is-user-auth="userStore.isUserAuth"
-                    :user-info="userStore.userInfo"
-                    @login="userStore.toggleModal"
-                    @logout="userStore.logout"/>
+                    @toggle="viewLoginForm"/>
             </div>
         </div>
     </nav>
-    <AuthModal />
+    <AuthModal :show-modal="showModalAuth" @close="viewLoginForm"/>
 </template>
 
 <style scoped>

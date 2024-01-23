@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps } from 'vue';
+import BTNViewFormAddProject from '@/components/Project/BTNViewFormAddProject.vue';
 
 const props = defineProps({
     countProject: {
@@ -23,7 +24,10 @@ const props = defineProps({
 <template>
     <div v-if="isUserAuth" class="container-fluid">
         <!-- Для больших экранов -->
-        <a class="nav-link d-none d-lg-inline" href="#">My Projects: {{ props.countProject }}</a>
+        <a class="nav-link d-none d-lg-inline" href="#">
+            My Projects: {{ props.countProject }}
+        </a>
+        <BTNViewFormAddProject />
         <a class="nav-link d-none d-lg-inline" href="#">My Tasks: {{ props.countTask }}</a>
 
         <!-- Для мобильных устройств -->

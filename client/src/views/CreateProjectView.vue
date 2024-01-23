@@ -4,8 +4,8 @@ import MainLayout from '@/layouts/MainLayout.vue';
 
 <template>
     <MainLayout>
-        <div class="container alert alert-warning">
-            HELLOOO!!!! <i class="bi bi-check"></i>
+        <div class="container">
+            FORM CREATE PROJECT
         </div>
     </MainLayout>
 </template>

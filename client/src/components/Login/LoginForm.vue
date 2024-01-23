@@ -1,10 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue';
-import useUserStore from '@/stores/userStore';
+import { ref, computed, defineEmits } from 'vue';
+import useAuthStore from '@/stores/authStore';
 import useAlertModalStore from '@/stores/alertModalStore';
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
 const alertModalStore = useAlertModalStore();
+const emit = defineEmits(['loginEnd']);
 
 const loginAuth = ref('');
 const passwordAuth = ref('');
@@ -12,7 +13,7 @@ const passwordAuth = ref('');
 const isValidLoginAuth = ref('');
 
 const validLogin = () => {
-    isValidLoginAuth.value = userStore.validLogin(loginAuth.value);
+    isValidLoginAuth.value = authStore.validLogin(loginAuth.value);
 };
 
 const loginInputClasses = computed(() => {
@@ -26,12 +27,14 @@ const loginInputClasses = computed(() => {
 });
 
 const sendLoginForm = async () => {
-    const result = await userStore.login({
+    const result = await authStore.login({
         loginAuth: loginAuth.value,
         passwordAuth: passwordAuth.value,
     });
     if (result.err) {
         alertModalStore.openModal(result.message, result.status);
+    } else {
+        emit('loginEnd', true);
     }
 };
 </script>

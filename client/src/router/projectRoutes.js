@@ -1,11 +1,30 @@
+import useUserStore from '@/stores/authStore';
+
 const projectRoutes = [
     {
         path: '/projects',
         name: 'projects',
-        component: () => import('../views/AboutView.vue'),
+        component: () => import('@/views/AboutView.vue'),
         meta: {
-            requiresAuth: true, // предполагается наличие авторизации
+            requiresAuth: false, // предполагается наличие авторизации
             title: 'Список Проектов',
+        },
+    },
+    {
+        path: '/create-project',
+        name: 'create-project',
+        component: () => import('@/views/CreateProjectView.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'Створення проекта',
+        },
+        beforeEnter: (to, from, next) => {
+            const userStore = useUserStore();
+            if (!userStore.isUserAuth) {
+                next({ name: 'login' }); // Перенаправление на страницу входа
+            } else {
+                next(); // Продолжить навигацию
+            }
         },
     },
 ];

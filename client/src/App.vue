@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted } from 'vue';
 import AlertAllInfoModal from '@/components/ModalWindow/AlertAllInfoModal.vue';
-import useUserStore from './stores/userStore';
+import useAuthStore from './stores/authStore';
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
 
-onMounted(() => {
-    userStore.initializeUser();
+onMounted(async () => {
+    await authStore.initializeUser();
 });
 </script>
 
