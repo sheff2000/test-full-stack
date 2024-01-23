@@ -109,19 +109,19 @@ const useAuthStore = defineStore('auth', {
             try {
                 // проверяем наличие локалСтореджа
                 const localToken = localStorage.getItem(config.tokenLocalStorage);
-                //console.log('INIT USER REFRESH. Token - ', localToken);
+                // console.log('INIT USER REFRESH. Token - ', localToken);
                 if (!localToken) {
                     // токена нет - на всякий случай удаляем возможныеданные
-                    //console.log('NOT ISSET token - logout');
+                    // console.log('NOT ISSET token - logout');
                     this.logout();
                     return false;
                 }
-                //console.log('Token isset');
+                // console.log('Token isset');
                 const tokenStore = useTokenStore();
                 const userStore = useUserStore();
                 // передаем токен с него на верификацию
                 const isTokenVerify = await tokenStore.verifyToken(localToken);
-                //console.log('Verify token  - ', isTokenVerify);
+                // console.log('Verify token  - ', isTokenVerify);
                 if (!isTokenVerify) {
                     console.log('ERROR verify');
                     this.logout();
