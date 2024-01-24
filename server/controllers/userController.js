@@ -1,5 +1,5 @@
 import validator from "../validation/userValidation.js";
-import {loginUser, createUser} from "../services/userService.js";
+import userService from "../services/userService.js";
 
 const login = async (req, res, next) => {
     try {
@@ -13,7 +13,7 @@ const login = async (req, res, next) => {
             return next(error);
         }
 
-        const result = await loginUser(userData);
+        const result = await userService.loginUser(userData);
         // возвращаем все что насобирали в сервисе
         return res.json(result);
     } catch(err) {
@@ -40,7 +40,7 @@ const register = async (req, res, next) => {
         // проверка прав доступа на текущий роутер - тут не надо
 
         // передаем все на сервис 
-        const result = await createUser(userData);
+        const result = await userService.createUser(userData);
 
         return res.status(201).json(result);
     } catch(err) {
@@ -52,9 +52,25 @@ const register = async (req, res, next) => {
     }
 };
 
+const getInfoByToken = async (req, res, next) => {
+    try {
+        // определить все входные аргументы
+        const user = req.user;
+        console.log('in getInfoByToken controller - ', user);
+        const result = await userService.getUserInfoById(user.userId);
+        return res.status(200).json(result);
+    } catch(err) {
+        console.error(err);
+        const error = new Error(err.message || "Internal server error");
+        error.status = error.status || 500;
+        return next(error);
+    }
+};
+
 const userController = {
     login,
     register,
+    getInfoByToken,
 }
 
 export default userController;

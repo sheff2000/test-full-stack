@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import User from "./modelsData/userSchema.js";
 
 const createUser = async (userData) => {
@@ -12,9 +13,20 @@ const createUser = async (userData) => {
 };
 
 const findUserbyId = async (userId) => {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        const error = new Error(`Incorrect format userID !`);
+        error.status = 400;
+        throw(error);
+    }
     try {
-        
-        return true;
+        console.log('MODEL USER. finduserById. userId = ', userId);
+        const user = await User.findById(userId); 
+        if (!user) {
+            const error = new Error(`User not found`);
+            error.status = 404;
+            throw(error);
+        }
+        return user;
     } catch (err) {
         throw err;
     }

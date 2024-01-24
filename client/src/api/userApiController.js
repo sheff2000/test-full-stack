@@ -47,6 +47,7 @@ const register = async (data) => {
 };
 
 const getUserInfoByToken = async (token) => {
+    console.log('get user info by token - ', token);
     const method = 'GET';
     const path = '/user/info';
     const sendData = {};

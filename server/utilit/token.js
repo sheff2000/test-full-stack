@@ -15,22 +15,27 @@ const generate = (userData) => {
 };
 
 const verifyToken = (req, res, next) => {
+    console.log('VERIFY TOKEN !!!!!');
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         console.log('error token');
-        return next( new Error('A token is required for authentication'))
+        const err = new Error('A token is required for authentication');
+        err.status = 401;
+        return next(err);
     }
 
     try {
-        console.log('ver token ', token);
+        //console.log('ver token ', token);
         req.user = jwt.verify(token, tokenConfig.secret_key);
-        console.log('user id - ', req.user);
+        //console.log('user id - ', req.user);
         return next();
     } catch (err) {
         if (err.name === 'TokenExpiredError') {
-            return next( new Error(`Token expired!`))
+            const err = new Error('Token expired!');
+            err.status = 403;
+            return next(403);
         }
-        return next( new Error(`Invalid Token!`))
+        return next( new Error(`Invalid Token!`));
     }
 };
 

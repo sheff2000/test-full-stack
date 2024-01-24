@@ -14,18 +14,26 @@ function timeoutPromise(ms, error) {
 
 async function sendReq(url, method, headers, data) {
     try {
-        console.log('API - url ', url, ' | method - ', method, ' | data - ', data);
-        const fetchPromise = await fetch(`${BASE_SERVER_URL}${url}`, {
-            method,
-            headers,
-            body: JSON.stringify(data),
-        });
+        console.log('API - url ', url, ' | method - ', method, ' | data - ', data, ' | headers - ', headers);
+        let fetchPromise;
+        if (method === 'GET') {
+            fetchPromise = await fetch(`${BASE_SERVER_URL}${url}`, {
+                method,
+                headers,
+            });
+        } else {
+            fetchPromise = await fetch(`${BASE_SERVER_URL}${url}`, {
+                method,
+                headers,
+                body: JSON.stringify(data),
+            });
+        }
 
         const response = await Promise.race([
             fetchPromise,
             timeoutPromise(5000, 'Сервер довго не відповідає.'),
         ]);
-
+        // console.log(response)
         if (response.ok) {
             const res = await response.json();
             return { err: false, res };
@@ -39,6 +47,7 @@ async function sendReq(url, method, headers, data) {
         });
         return res;
     } catch (error) {
+        console.log('FIRST ERROR - ', error);
         const res = await errorApi({
             err: true,
             errStatus: 'api',
